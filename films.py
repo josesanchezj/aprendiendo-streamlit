@@ -6,7 +6,7 @@ from collections import Counter
 # Cargando los datos
 @st.cache
 def load_data():
-    data = pd.read_csv('/path/to/your/file.csv')
+    data = pd.read_csv('IMDB-Movie-Data.csv')
     return data
 
 data = load_data()
