@@ -13,14 +13,17 @@ data = load_data()
 
 # Sidebar - Añadiendo filtros
 st.sidebar.header('Filtros')
-selected_year = st.sidebar.slider('Año de Lanzamiento', int(data['Year'].min()), int(data['Year'].max()), int(data['Year'].min()))
-selected_rating = st.sidebar.slider('Rating', float(data['Rating'].min()), float(data['Rating'].max()), float(data['Rating'].min()))
-selected_revenue = st.sidebar.slider('Revenue (Millions)', float(data['Revenue (Millions)'].min()), float(data['Revenue (Millions)'].max()), float(data['Revenue (Millions)'].min()))
-selected_duration = st.sidebar.slider('Duración (Minutos)', int(data['Runtime (Minutes)'].min()), int(data['Runtime (Minutes)'].max()), int(data['Runtime (Minutes)'].min()))
-selected_votes = st.sidebar.slider('Número de Votos', int(data['Votes'].min()), int(data['Votes'].max()), int(data['Votes'].min()))
+selected_years = st.sidebar.multiselect('Año de Lanzamiento', data['Year'].unique(), data['Year'].unique())
+selected_rating = st.sidebar.slider('Rating', float(data['Rating'].min()), float(data['Rating'].max()), (float(data['Rating'].min()), float(data['Rating'].max())))
+selected_revenue = st.sidebar.slider('Revenue (Millions)', float(data['Revenue (Millions)'].min()), float(data['Revenue (Millions)'].max()), (float(data['Revenue (Millions)'].min()), float(data['Revenue (Millions)'].max())))
+selected_duration = st.sidebar.slider('Duración (Minutos)', int(data['Runtime (Minutes)'].min()), int(data['Runtime (Minutes)'].max()), (int(data['Runtime (Minutes)'].min()), int(data['Runtime (Minutes)'].max())))
+selected_votes = st.sidebar.slider('Número de Votos', int(data['Votes'].min()), int(data['Votes'].max()), (int(data['Votes'].min()), int(data['Votes'].max())))
 
 # Aplicando filtros
-filtered_data = data[(data['Year'] == selected_year) & (data['Rating'] >= selected_rating) & (data['Revenue (Millions)'] >= selected_revenue) & (data['Runtime (Minutes)'] >= selected_duration) & (data['Votes'] >= selected_votes)]
+filtered_data = data[(data['Year'].isin(selected_years)) & (data['Rating'] >= selected_rating[0]) & (data['Rating'] <= selected_rating[1]) & 
+                     (data['Revenue (Millions)'] >= selected_revenue[0]) & (data['Revenue (Millions)'] <= selected_revenue[1]) &
+                     (data['Runtime (Minutes)'] >= selected_duration[0]) & (data['Runtime (Minutes)'] <= selected_duration[1]) &
+                     (data['Votes'] >= selected_votes[0]) & (data['Votes'] <= selected_votes[1])]
 
 # Título de la aplicación
 st.title('Dashboard de Películas')
